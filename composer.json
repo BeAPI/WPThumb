@@ -1,5 +1,5 @@
 {
-	"name"       : "humanmade/wp-thumb",
+	"name"       : "beapi/wp-thumb",
 	"description": "An on-demand image generation replacement for WordPress image resizing.",
 	"keywords"   : ["wordpress"],
 	"homepage"   : "https://github.com/humanmade/WPThumb",
