@@ -4,7 +4,7 @@ Plugin Name: WP Thumb
 Plugin URI: https://github.com/humanmade/WPThumb
 Description: An on-demand image generation replacement for WordPress' image resizing.
 Author: Human Made Limited
-Version: 0.10
+Version: 0.11
 Author URI: http://www.hmn.md/
 */
 
@@ -668,7 +668,7 @@ function wpthumb_post_image( $null, $id, $args ) {
 
 		$crop = (bool) ( empty( $crop ) ) ? false : $crop;
 
-		if ( ! $image->errored() && $image_meta = @getimagesize( $image->getCacheFilePath() ) ) :
+		if ( ! $image->errored() && ! empty( $image->getCacheFilePath() ) && $image_meta = @getimagesize( $image->getCacheFilePath() ) ) :
 
 			$html_width = $image_meta[0];
 			$html_height = $image_meta[1];
