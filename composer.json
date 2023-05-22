@@ -14,7 +14,5 @@
 	"support"    : {
 		"issues": "https://github.com/humanmade/WPThumb/issues"
 	},
-	"autoload"   : {
-		"classmap": ["wpthumb.php"]
-	}
+	"type": "wordpress-plugin"
 }
