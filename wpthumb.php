@@ -59,6 +59,8 @@ class WP_Thumb {
 	 */
 	private $file_path;
 
+	private $_file_path;
+	private $error;
 	private static $wp_upload_dir;
 
 	private static function uploadDir() {
@@ -376,7 +378,7 @@ class WP_Thumb {
 		$serialize = crc32( serialize( array_merge( $this->getArgs(), array( $this->getFilePath() ) ) ) );
 
 		// Gifs are converted to pngs
-		if ( $this->getFileExtension() == 'gif' )
+		if ( $this->getFileExtension() === 'gif' )
 			return $serialize . '.png';
 
 		return $serialize . '.' . $this->getFileExtension();
@@ -391,11 +393,8 @@ class WP_Thumb {
 
 	/**
 	 * Generate the new cache file using the original image and args
-	 *
-	 * @return string new filepath
 	 */
 	public function generateCacheFile() {
-
 		$new_filepath = $this->getCacheFilePath();
 		$file_path = $this->getFilePath();
 
@@ -408,7 +407,7 @@ class WP_Thumb {
 		/**
 		 * Workaround to preserve image blending when images are not specifically resized (smaller than dimensions for example)
 		 */
-		if ( is_a( $editor, 'WP_Thumb_Image_Editor_GD' ) ) {
+		if ( $editor instanceof \WP_Thumb_Image_Editor_GD ) {
 			imagealphablending( $editor->get_image(), false );
 			imagesavealpha( $editor->get_image(), true );
 		}
@@ -422,7 +421,7 @@ class WP_Thumb {
 		wp_mkdir_p( $this->getCacheFileDirectory() );
 
 		// Convert gif images to png before resizing
-		if ( $this->getFileExtension() == 'gif' ) :
+		if ( $this->getFileExtension() === 'gif' ) :
 
 			// Save the converted image
 			$editor->save( $new_filepath, 'image/png' );
@@ -431,10 +430,12 @@ class WP_Thumb {
 			$editor->set_quality( $this->args['jpeg_quality'] );
 
 			// Pass the new file back through the function so they are resized
-			return new WP_Thumb( $new_filepath, array_merge( $this->args, array(
+			new WP_Thumb( $new_filepath, array_merge( $this->args, array(
 				'output_file' => $new_filepath,
 				'cache'       => false
 			) ) );
+
+			return;
 
 		endif;
 
@@ -509,14 +510,14 @@ class WP_Thumb {
 		$size = $editor->get_size();
 		$crop = array( 'x' => 0, 'y' => 0 );
 
-		if ( $position[0] == 'right' )
+		if ( $position[0] === 'right' )
 			$crop['x'] = absint( $size['width'] - $width );
-		else if ( $position[0] == 'center' )
+		else if ( $position[0] === 'center' )
 			$crop['x'] = intval( absint( $size['width'] - $width ) / 2 );
 
-		if ( $position[1] == 'bottom' )
+		if ( $position[1] === 'bottom' )
 			$crop['y'] = absint( $size['height'] - $height );
-		else if ( $position[1] == 'center' )
+		else if ( $position[1] === 'center' )
 			$crop['y'] = intval( absint( $size['height'] - $height ) / 2 );
 
 
@@ -552,7 +553,7 @@ class WP_Thumb {
 			$path = $this->getCacheFilePath();
 		}
 
-		if ( $this->args['return'] == 'path' )
+		if ( $this->args['return'] === 'path' )
 			return $path;
 
 		return $path ? $this->getFileURLForFilePath( $path ) : $path;
@@ -584,17 +585,13 @@ class WP_Thumb {
 	 * @return string url
 	 */
 	private function getFileURLForFilePath( $path ) {
-
 		$upload_dir = self::uploadDir();
 
 		if ( strpos( $path, $upload_dir['basedir'] ) !== false ) {
 			return str_replace( $upload_dir['basedir'], $upload_dir['baseurl'], $path );
-
-		} else {
-			return str_replace( self::get_home_path(), trailingslashit( home_url() ), $path );
-
 		}
 
+		return str_replace( self::get_home_path(), trailingslashit( home_url() ), $path );
 	}
 
 }
@@ -609,12 +606,9 @@ class WP_Thumb {
  * @return (string) url to the image
  */
 function wpthumb( $url, $args = array() ) {
-
 	$thumb = new WP_Thumb( $url, $args );
 
-	$return = $thumb->returnImage();
-
-	return $return;
+	return $thumb->returnImage();
 }
 
 /**
@@ -650,8 +644,8 @@ function wpthumb_post_image( $null, $id, $args ) {
 	if ( ! empty( $args['crop'] ) && $args['crop'] && empty( $args['crop_from_position'] ) )
 		$args['crop_from_position'] = get_post_meta( $id, 'wpthumb_crop_pos', true );
 
-	if ( empty( $path ) )
-		$path = get_attached_file( $id );
+	//if ( empty( $path ) )
+	$path = get_attached_file( $id );
 
 	$path = apply_filters( 'wpthumb_post_image_path', $path, $id, $args );
 	$args = apply_filters( 'wpthumb_post_image_args', $args, $id );
@@ -665,8 +659,6 @@ function wpthumb_post_image( $null, $id, $args ) {
 	if ( ! $image->errored() ) {
 
 		$image_src = $image->returnImage();
-
-		$crop = (bool) ( empty( $crop ) ) ? false : $crop;
 
 		if ( ! $image->errored() && ! empty( $image->getCacheFilePath() ) && $image_meta = @getimagesize( $image->getCacheFilePath() ) ) :
 
@@ -729,7 +721,7 @@ function wpthumb_rmdir_recursive( $dir ) {
 
 	while ( false !== ( $file = readdir( $handle ) ) ) {
 
-		if ( $file == '.' || $file == '..' )
+		if ( $file === '.' || $file === '..' )
 			continue;
 
 		$path = $dir . $file;
@@ -745,14 +737,13 @@ function wpthumb_rmdir_recursive( $dir ) {
 	closedir( $handle );
 
 	rmdir( $dir );
-
+	return true;
 }
 
 /**
  * wpthumb_errors function.
  *
  * @access public
- * @return null
  */
 function wpthumb_errors() {
 
