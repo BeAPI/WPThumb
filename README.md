@@ -1,4 +1,4 @@
-_**This project is unmaintained.**_
+_**This project is a definitive fork in the road for long-term maintenance of the projects built with it.**_
 
 <table width="100%">
 	<tr>
@@ -6,18 +6,10 @@ _**This project is unmaintained.**_
 			<strong>WP Thumb</strong><br />
 			An on-demand image generation replacement for WordPress' image resizing.
 		</td>
-		<td align="right" width="20%">
-			<a href="https://travis-ci.org/humanmade/WPThumb">
-				<img src="https://api.travis-ci.org/humanmade/WPThumb.svg?branch=master" alt="Build status">
-			</a>
-		</td>
 	</tr>
 	<tr>
 		<td>
 			A <strong><a href="https://hmn.md/">Human Made</a></strong> project.
-		</td>
-		<td align="center">
-			<img src="https://hmn.md/content/themes/hmnmd/assets/images/hm-logo.svg" width="100" />
 		</td>
 	</tr>
 </table>
