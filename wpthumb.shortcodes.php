@@ -23,14 +23,13 @@ function wpthumb_img_shortcode( $args ) {
 	}
 
 	if ( is_numeric( $args[0] ) ) {
-
 		$attachment_id = $args[0];
 		unset( $args[0] );
 
 		return wp_get_attachment_image( $attachment_id, $args, false, $attrs );
+	}
 
-	} else if ( ! empty( $args ) ) {
-
+	if ( ! empty( $args ) ) {
 		$url = esc_url( $args[0] );
 		unset( $args[0] );
 
@@ -44,6 +43,8 @@ function wpthumb_img_shortcode( $args ) {
 			$attr .= ' ' . $a . '="' . esc_attr( $value ) . '"';
 		}
 
-		return '<img src="' . $image . '" width="' . $width . '" height="' . $height . '"' . $attr . ' />';
+		return '<img src="' . esc_url( $image ) . '" width="' . esc_attr( $width ) . '" height="' . esc_attr( $height ) . '"' . $attr . ' />';
 	}
+
+	return '';
 }

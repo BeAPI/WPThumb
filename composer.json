@@ -2,7 +2,7 @@
 	"name"       : "beapi/wp-thumb",
 	"description": "An on-demand image generation replacement for WordPress image resizing.",
 	"keywords"   : ["wordpress"],
-	"homepage"   : "https://github.com/humanmade/WPThumb",
+	"homepage"   : "https://github.com/beapi/WPThumb",
 	"license"    : "GPL-2.0+",
 	"authors"    : [
 		{
@@ -12,7 +12,7 @@
 		}
 	],
 	"support"    : {
-		"issues": "https://github.com/humanmade/WPThumb/issues"
+		"issues": "https://github.com/beapi/WPThumb/issues"
 	},
 	"type": "wordpress-plugin"
 }

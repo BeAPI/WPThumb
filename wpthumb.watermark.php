@@ -1,5 +1,4 @@
 <?php
-
 class WP_Thumb_Watermark {
 
 	private $args = array();
@@ -89,9 +88,8 @@ add_filter( 'wpthumb_post_image_args', 'wpthumb_watermark_add_args_to_post_image
  * @param array $args
  */
 function wpthumb_watermark_pre( $editor, $args ) {
-
 	// currently only supports GD
-	if ( ! is_a( $editor, 'WP_Thumb_Image_Editor_GD' ) || empty( $args['watermark_options'] ) ) {
+	if ( ! $editor instanceof \WP_Thumb_Image_Editor_GD || empty( $args['watermark_options'] ) ) {
 		return $editor;
 	}
 
@@ -108,9 +106,8 @@ function wpthumb_watermark_pre( $editor, $args ) {
 add_filter( 'wpthumb_image_pre', 'wpthumb_watermark_pre', 10, 2 );
 
 function wpthumb_watermark_post( $editor, $args ) {
-
 	// currently only supports GD
-	if ( ! is_a( $editor, 'WP_Thumb_Image_Editor_GD' ) || empty( $args['watermark_options'] ) ) {
+	if ( ! $editor instanceof \WP_Thumb_Image_Editor_GD || empty( $args['watermark_options'] ) ) {
 		return $editor;
 	}
 
@@ -139,7 +136,6 @@ add_filter( 'wpthumb_image_post', 'wpthumb_watermark_post', 10, 2 );
  * @return $post
  */
 function wpthumb_media_form_watermark_position( $fields, $post ) {
-
 	if ( ! wp_attachment_is_image( $post->ID ) ) {
 		return $fields;
 	}
@@ -151,9 +147,7 @@ function wpthumb_media_form_watermark_position( $fields, $post ) {
 	}
 
 	ob_start();
-
 	?>
-
     <style>
         #wpthumb_crop_pos {
         }
@@ -176,7 +170,6 @@ function wpthumb_media_form_watermark_position( $fields, $post ) {
             width: auto;
         }
     </style>
-
     <div id="wm-options-<?php echo $post->ID ?>">
         <p>
             <label>
@@ -233,7 +226,6 @@ function wpthumb_media_form_watermark_position( $fields, $post ) {
 	);
 
 	return $fields;
-
 }
 
 /**
@@ -242,7 +234,6 @@ function wpthumb_media_form_watermark_position( $fields, $post ) {
  *
  */
 function wpthumb_add_watermarking_admin_hooks() {
-
 	if ( current_theme_supports( 'wpthumb-watermarking' ) ) {
 		add_filter( 'attachment_fields_to_edit', 'wpthumb_media_form_watermark_position', 10, 2 );
 		add_filter( 'attachment_fields_to_save', 'wpthumb_media_form_watermark_save', 10, 2 );
@@ -264,14 +255,12 @@ add_action( 'init', 'wpthumb_add_watermarking_admin_hooks' );
  * @return $post
  */
 function wpthumb_media_form_watermark_save( $post, $attachment ) {
-
 	if ( ! empty( $attachment['wpthumb_wm_use_watermark'] ) ) {
 		update_post_meta( $post['ID'], 'use_watermark', true );
 		update_post_meta( $post['ID'], 'wpthumb_wm_position', $attachment['wpthumb_wm_watermark_position'] );
 		update_post_meta( $post['ID'], 'wpthumb_wm_padding', (int) $attachment['wpthumb_wm_watermark_padding'] );
 		update_post_meta( $post['ID'], 'wpthumb_wm_pre_resize', '0' );
 		update_post_meta( $post['ID'], 'wpthumb_wm_mask', $attachment['wm_watermark_mask'] );
-
 	} else {
 		delete_post_meta( $post['ID'], 'use_watermark' );
 		delete_post_meta( $post['ID'], 'wpthumb_wm_position' );
@@ -293,7 +282,6 @@ function wpthumb_media_form_watermark_save( $post, $attachment ) {
  * @return array
  */
 function wpthumb_wm_get_options( $id ) {
-
 	if ( ! wpthumb_wm_image_has_watermark( $id ) ) {
 		return array();
 	}
@@ -340,7 +328,6 @@ function wpthumb_wm_image_has_watermark( $image_id ) {
  * @return null
  */
 function wpthumb_wm_position( $image_id ) {
-
 	if ( $pos = get_post_meta( $image_id, 'wpthumb_wm_position', true ) ) {
 		return $pos;
 	}
@@ -361,7 +348,6 @@ function wpthumb_wm_position( $image_id ) {
  * @return null
  */
 function wpthumb_wm_padding( $image_id ) {
-
 	if ( $padding = (int) get_post_meta( $image_id, 'wpthumb_wm_padding', true ) ) {
 		return $padding;
 	}
@@ -373,7 +359,6 @@ function wpthumb_wm_padding( $image_id ) {
 }
 
 function wpthumb_wm_pre_resize( $image_id ) {
-
 	if ( $pre = (bool) get_post_meta( $image_id, 'wpthumb_wm_pre_resize', true ) ) {
 		return $pre;
 	}
@@ -386,7 +371,6 @@ function wpthumb_wm_pre_resize( $image_id ) {
 }
 
 function wpthumb_wm_mask( $image_id ) {
-
 	if ( $pre = (string) get_post_meta( $image_id, 'wpthumb_wm_mask', true ) ) {
 		return $pre;
 	}
@@ -440,7 +424,6 @@ function wpthumb_wm_get_watermark_mask_file( $mask ) {
  * @param string $label - test to be used for the watermarks name
  */
 function wpthumb_wm_register_watermark( $name, $file, $label ) {
-
 	global $_wm_registered_watermarks;
 	$_wm_registered_watermarks = (array) $_wm_registered_watermarks;
 

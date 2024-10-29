@@ -30,8 +30,7 @@ class WP_Thumb_Background_Fill {
 	 * Background fill an image using the provided color
 	 */
 	public function fill_with_color( $color ) {
-
-		if ( ! is_array( $color ) && strlen( $color ) == 3 ) {
+		if ( ! is_array( $color ) && strlen( $color ) === 3 ) {
 			$color = (float) str_pad( (string) $color, 9, $color ) . '000';
 		}
 
@@ -51,7 +50,6 @@ class WP_Thumb_Background_Fill {
 	 * @param Array $colors The desired pad colors in RGB format, array should be array( 'top' => '', 'right' => '', 'bottom' => '', 'left' => '' );
 	 */
 	private function fill_color( array $colors ) {
-
 		$current_size = $this->editor->get_size();
 
 		$size = array( 'width' => $this->args['width'], 'height' => $this->args['height'] );
@@ -67,7 +65,6 @@ class WP_Thumb_Background_Fill {
 
 		// Check if we are padding vertically or horizontally
 		if ( $current_size['width'] != $size['width'] ) {
-
 			$colorToPaint = imagecolorallocatealpha( $new_image, substr( $colors['left'], 0, 3 ), substr( $colors['left'], 3, 3 ), substr( $colors['left'], 6, 3 ), substr( $colors['left'], 9, 3 ) );
 
 			// Fill left color
@@ -77,11 +74,9 @@ class WP_Thumb_Background_Fill {
 
 			// Fill right color
 			imagefilledrectangle( $new_image, $offsetLeft + $current_size['width'] - 5, 0, $size['width'], $size['height'], $colorToPaint );
-
 		}
 
 		if ( $current_size['height'] != $size['height'] ) {
-
 			$colorToPaint = imagecolorallocatealpha( $new_image, substr( $colors['top'], 0, 3 ), substr( $colors['top'], 3, 3 ), substr( $colors['top'], 6, 3 ), substr( $colors['left'], 9, 3 ) );
 
 			// Fill top color
@@ -91,7 +86,6 @@ class WP_Thumb_Background_Fill {
 
 			// Fill bottom color
 			imagefilledrectangle( $new_image, 0, $offsetTop - 5 + $current_size['height'], $size['width'], $size['height'], $colorToPaint );
-
 		}
 
 		imagecopy( $new_image, $this->editor->get_image(), $offsetLeft, $offsetTop, 0, 0, $current_size['width'], $current_size['height'] );
@@ -101,7 +95,6 @@ class WP_Thumb_Background_Fill {
 	}
 
 	public function get_background_color() {
-
 		$current_size = $this->editor->get_size();
 
 		$coords = array(
@@ -127,15 +120,12 @@ class WP_Thumb_Background_Fill {
 		}
 
 		return $color;
-
 	}
-
 }
 
 function wpthumb_background_fill( $editor, $args ) {
-
 	// currently only supports GD
-	if ( ! is_a( $editor, 'WP_Thumb_Image_Editor_GD' ) ) {
+	if ( ! $editor instanceof \WP_Thumb_Image_Editor_GD ) {
 		return $editor;
 	}
 

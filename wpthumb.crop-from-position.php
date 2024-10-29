@@ -1,12 +1,10 @@
 <?php
-
 /**
  * Only add the watermarking admin options if the current theme supports it, as we don't want to clutter
  * for people who don't care
  *
  */
 function wpthumb_add_crop_from_position_admin_hooks() {
-
 	if ( current_theme_supports( 'wpthumb-crop-from-position' ) ) {
 		add_filter( 'attachment_fields_to_edit', 'wpthumb_media_form_crop_position', 10, 2 );
 		add_filter( 'attachment_fields_to_save', 'wpthumb_media_form_crop_position_save', 10, 2 );
@@ -23,12 +21,11 @@ add_action( 'init', 'wpthumb_add_crop_from_position_admin_hooks' );
  * @access public
  *
  * @param array $fields
- * @param array $post
+ * @param WP_Post $post
  *
  * @return $post
  */
 function wpthumb_media_form_crop_position( $fields, $post ) {
-
 	if ( ! wp_attachment_is_image( $post->ID ) ) {
 		return $fields;
 	}
@@ -59,7 +56,6 @@ function wpthumb_media_form_crop_position( $fields, $post ) {
 	);
 
 	return $fields;
-
 }
 
 /**
@@ -75,17 +71,15 @@ function wpthumb_media_form_crop_position( $fields, $post ) {
  * @return $post
  */
 function wpthumb_media_form_crop_position_save( $post, $attachment ) {
-
 	if ( ! isset( $attachment['wpthumb_crop_pos'] ) ) {
-		return;
+		return $post;
 	}
 
-	if ( $attachment['wpthumb_crop_pos'] == 'center,center' ) {
+	if ( $attachment['wpthumb_crop_pos'] === 'center,center' ) {
 		delete_post_meta( $post['ID'], 'wpthumb_crop_pos' );
 	} else {
 		update_post_meta( $post['ID'], 'wpthumb_crop_pos', $attachment['wpthumb_crop_pos'] );
 	}
 
 	return $post;
-
 }

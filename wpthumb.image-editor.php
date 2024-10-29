@@ -1,7 +1,6 @@
 <?php
 
 class WP_Thumb_Image_Editor_GD extends WP_Image_Editor_GD {
-
 	public function get_image() {
 		return $this->image;
 	}
@@ -16,7 +15,6 @@ class WP_Thumb_Image_Editor_GD extends WP_Image_Editor_GD {
 }
 
 class WP_Thumb_Image_Editor_Imagick extends WP_Image_Editor_Imagick {
-
 	public function get_image() {
 		return $this->image;
 	}
