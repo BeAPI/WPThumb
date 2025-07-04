@@ -4,8 +4,8 @@ Plugin Name: WP Thumb
 Plugin URI: https://github.com/humanmade/WPThumb
 Description: An on-demand image generation replacement for WordPress' image resizing.
 Author: Be API (previous Human Made Limited)
-Version: 0.13
-Author URI: http://www.beapi.fr
+Version: 0.14
+Author URI: http://www.beapi.fr	
 */
 
 /*  Copyright 2014 Human Made Limited  (email : hello@humanmade.co.uk)
@@ -221,9 +221,9 @@ class WP_Thumb {
 			return $this->_file_path;
 		}
 
-		if ( strpos( $this->file_path, '/' ) === 0 && ! file_exists( $this->file_path ) && $this->args['default'] ) {
+		if ( strpos( $this->file_path, '/' ) === 0 && ! file_exists( $this->file_path ) && ! empty( $this->args['default'] ) ) {
 			$this->file_path = $this->args['default'];
-		} elseif ( ( ! $this->file_path ) && $this->args['default'] && file_exists( $this->args['default'] ) ) {
+		} elseif ( ( ! $this->file_path ) && ! empty( $this->args['default'] ) && file_exists( $this->args['default'] ) ) {
 			$this->file_path = $this->args['default'];
 		}
 
