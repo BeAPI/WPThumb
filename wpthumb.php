@@ -634,6 +634,10 @@ function wpthumb( $url, $args = array() ) {
  * @return null
  */
 function wpthumb_post_image( $null, $id, $args ) {
+	// Check if the attachment is an image, if not return null (e.g. for SVG files)
+	if ( ! wp_attachment_is_image( $id ) ) {
+		return $null;
+	}
 
 	// check if $args is a WP Thumb argument list, or native WordPress one
 	// wp thumb looks like this: 'width=300&height=120&crop=1'
