@@ -6,45 +6,18 @@
  * The wpthumb shortcode supports all the WP Thumb arguments, for example:
  *
  * [wpthumb 4567 width=400 height=200]
+ *
+ * @deprecated 0.11 Use wp_get_attachment_image() or native WordPress image functions instead.
+ * @since 0.1
+ * @param array $args Shortcode arguments
+ * @return string Empty string - function deprecated due to SSRF vulnerability (CVE-2025-49983)
  */
 
 add_shortcode( 'wpthumb', 'wpthumb_img_shortcode' );
 
 function wpthumb_img_shortcode( $args ) {
-
-	$args_attrs = array( 'class', 'alt' );
-	$attrs      = array();
-
-	foreach ( $args_attrs as $att ) {
-		if ( isset( $args[ $att ] ) ) {
-			$attrs[ $att ] = $args[ $att ];
-			unset( $args[ $att ] );
-		}
-	}
-
-	if ( is_numeric( $args[0] ) ) {
-		$attachment_id = $args[0];
-		unset( $args[0] );
-
-		return wp_get_attachment_image( $attachment_id, $args, false, $attrs );
-	}
-
-	if ( ! empty( $args ) ) {
-		$url = esc_url( $args[0] );
-		unset( $args[0] );
-
-		$image = wpthumb( $url, $args );
-
-		list( $width, $height ) = getimagesize( $image );
-
-		$attr = '';
-
-		foreach ( $attrs as $a => $value ) {
-			$attr .= ' ' . $a . '="' . esc_attr( $value ) . '"';
-		}
-
-		return '<img src="' . esc_url( $image ) . '" width="' . esc_attr( $width ) . '" height="' . esc_attr( $height ) . '"' . $attr . ' />';
-	}
-
+	
+	_deprecated_function( __FUNCTION__, '0.11', 'wp_get_attachment_image() or native WordPress image functions. This shortcode has been disabled due to SSRF security vulnerability (CVE-2025-49983).' );
+	
 	return '';
 }

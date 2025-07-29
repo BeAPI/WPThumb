@@ -4,7 +4,7 @@ Plugin Name: WP Thumb
 Plugin URI: https://github.com/humanmade/WPThumb
 Description: An on-demand image generation replacement for WordPress' image resizing.
 Author: Be API (previous Human Made Limited)
-Version: 0.15.1
+Version: 0.16.0
 Author URI: http://www.beapi.fr	
 */
 

@@ -21,6 +21,14 @@ WP Thumb is a simple but powerful plugin that seamlessly intergrates with the Co
 * Can extend using filters to make use of any of the phpThumb Library functions by manipulating the image object.
 * Integrate with Imgix & S3 via the [WP Thumb Bridge](https://github.com/humanmade/wpthumb-bridge)
 
+## Changelog
+
+### 0.16.0 - Security Release
+
+* **SECURITY FIX**: Deprecated wpthumb shortcode to fix SSRF vulnerability (CVE-2025-49983)
+* The `[wpthumb]` shortcode has been disabled due to Server Side Request Forgery vulnerability
+* Use `wp_get_attachment_image()` or native WordPress image functions instead
+
 ## Installation 
 
 Just install like any other WordPress plugin.
