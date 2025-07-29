@@ -2,7 +2,7 @@ _**This project is a definitive fork in the road for long-term maintenance of th
 
 <table width="100%">
 	<tr>
-		<td align="left" width="70">
+		<td align="left" width="70%">
 			<strong>WP Thumb</strong><br />
 			An on-demand image generation replacement for WordPress' image resizing.
 		</td>
