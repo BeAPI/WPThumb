@@ -3,7 +3,7 @@ Contributors: humanmade, joehoyle, mattheu, tcrsavage, willmot
 Tags: image, resize, thumbnail, crop, phpthumb
 Requires at least: 3.5
 Tested up to: 6.5
-Stable tag: 0.16.0
+Stable tag: 0.17.0
 
 An on-demand image generation replacement for WordPress' image resizing.
 
@@ -17,6 +17,10 @@ WP Thumb is a simple plugin that seamlessly integrates with the WordPress image 
 * Ideal for when you want to change the dimensions of default image sizes.
 
 == Changelog ==
+
+#### 0.17.0
+
+* Fix SVG detection to not resize them.
 
 #### 0.16.0
 

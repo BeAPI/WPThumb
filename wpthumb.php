@@ -4,7 +4,7 @@ Plugin Name: WP Thumb
 Plugin URI: https://github.com/humanmade/WPThumb
 Description: An on-demand image generation replacement for WordPress' image resizing.
 Author: Be API (previous Human Made Limited)
-Version: 0.16.0
+Version: 0.17.0
 Author URI: http://www.beapi.fr	
 */
 
@@ -634,8 +634,14 @@ function wpthumb( $url, $args = array() ) {
  * @return null
  */
 function wpthumb_post_image( $null, $id, $args ) {
-	// Check if the attachment is an image, if not return null (e.g. for SVG files)
-	if ( ! wp_attachment_is_image( $id ) ) {
+	$attachment = get_post( $id );
+
+	/**
+	 * Check if the attachment is an image, if not return null (e.g. for SVG files)
+	 * Since WordPress is now considering SVG as images, we need to detect this on mime_type
+	 *
+	 **/
+	if ( ! wp_attachment_is_image( $id ) || str_contains( $attachment->post_mime_type, 'svg' ) ) {
 		return $null;
 	}
 
